@@ -1,0 +1,41 @@
+class Solution {
+public:
+    bool oneEditAway(string first, string second) {
+
+       int len1 = first.size();
+       int len2 = second.length();
+       int len = len1>len2?len1:len2; //如果1 > 2 ,那么返回len1 ，否则返回len2
+       int res_len1 = 0;
+       int res_len2 = 0;
+       char flag = 0;
+       if (abs(len1-len2) > 1)//abs为求绝对值。 
+      {
+             return false;
+       }
+       for(int i = 0; i < len; i++) 
+       {
+            if(first[res_len1] != second[res_len2]) {
+                if (len1 == len2)
+                    {
+                        first[res_len1++]=second[res_len2++];//替换可以符合要求
+                    }
+                else if (len1>len2)
+                    {
+                        first[res_len1++];//看看第一个的下一个还是不是相等的，插入和删除本来就是相对操作
+                    }
+                else
+                    {
+                        second[res_len2++];
+                    }
+                flag++;
+            }
+          else//当前相等，同时后移
+           {
+                           first[res_len1++];
+                           second[res_len2++];
+             }
+             if (flag>1)
+             { 
+                return false;
+             }        
+         }
