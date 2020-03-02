@@ -1,0 +1,45 @@
+class Solution {
+public:
+	template<typename T>
+	void SwapForRotate(T& l, T& r){//相当于swap
+		l = l^r;
+		r = l^r;
+		l = l^r;
+	}
+	void rotate(vector<vector<int>>& matrix) {
+		//1) 以主对角线为轴，镜像
+		for(size_t i=0;i<matrix.size();++i){
+			for(size_t j=i+1;j<matrix[0].size();++j){
+				SwapForRotate(matrix[i][j], matrix[j][i]);
+			}
+		}
+		//2) 每一行反向
+		for(size_t i=0;i<matrix.size();++i){
+			for(size_t j=0;j<matrix[0].size()/2;++j){
+				SwapForRotate(matrix[i][j], matrix[i][matrix[0].size()-1-j]);
+			}
+		}
+	}
+};
+
+//写法二
+class Solution {
+public:
+    void rotate(vector<vector<int>>& matrix) {
+        int rows = matrix.size();
+        for(int i=0;i<rows;i++){
+            for(int j=i+1;j<rows;j++){//这里注意同元素不要直接^=操作，否则回不去，对角线都是0
+                matrix[i][j] ^= matrix[j][i];
+                matrix[j][i] ^= matrix[i][j];
+                matrix[i][j] ^= matrix[j][i];
+            }
+        }
+        for(int i=0;i<(rows/2);i++){
+            for(int j=0;j<rows;j++){
+                matrix[j][i] ^= matrix[j][rows - i - 1];
+                matrix[j][rows - i - 1] ^= matrix[j][i];
+                matrix[j][i] ^= matrix[j][rows - i - 1];
+            }
+        }
+    }
+};
