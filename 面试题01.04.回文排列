@@ -1,0 +1,16 @@
+//很简单的一道题，注意动态数组的用法：字符的本质是数字
+
+class Solution {
+public:
+    bool canPermutePalindrome(string s) {
+        vector<int> hash(256, 0);
+        for (auto c : s) {
+            ++hash[c];
+        }
+        int cnt = 0;
+        for (int i = 0; i < hash.size(); ++i) {
+            if (hash[i] % 2 == 1) ++cnt;
+        }
+        return cnt <= 1;
+    }
+};
