@@ -1,0 +1,69 @@
+首先是递归方法：
+
+其实关键就是在于什么时候输出值
+前序遍历递归算法：
+
+void PreOrder(Node *bt)//形参为结构体类型的指针
+{
+  if(bt==NULL)return;//递归调用的结束条件
+  else{
+    cout<<bt->data;//访问根结点的data值
+    PreOrder(bt->lchild);//前序递归遍历bt左子树
+    PreOrder(bt->rchild);//前序递归遍历bt右子树
+       }
+}
+中序遍历递归算法：
+
+void IneOrder(Node *bt)//形参为结构体类型的指针
+{
+  if(bt==NULL)return;//递归调用的结束条件
+  else{
+    InOrder(bt->lchild);//中序递归遍历bt左子树
+    cout<<bt->data;//访问根结点的data值
+    InOrder(bt->rchild);//中序递归遍历bt右子树
+       }
+}
+后序遍历递归算法：
+
+void PostOrder(Node *bt)//形参为结构体类型的指针
+{
+  if(bt==NULL)return;//递归调用的结束条件
+  else{
+    PostOrder(bt->lchild);//后序递归遍历bt左子树
+    PostOrder(bt->rchild);//后序递归遍历bt右子树
+    cout<<bt->data;//访问根结点的data值 
+      }
+}
+
+
+层序遍历：
+
+BFS：借助队列：
+/**
+ * Definition for a binary tree node.
+ * struct TreeNode {
+ *     int val;
+ *     TreeNode *left;
+ *     TreeNode *right;
+ *     TreeNode(int x) : val(x), left(NULL), right(NULL) {}
+ * };
+ */
+class Solution {
+public:
+    vector<int> levelOrder(TreeNode* root) {
+        vector<int> res;
+        if(root==NULL) return res;
+        queue<TreeNode*> q;
+        q.push(root);
+
+        while(!q.empty()){
+            TreeNode* cur = q.front();
+            if(cur->left) q.push(cur->left);
+            if(cur->right) q.push(cur->right);
+            q.pop();
+            res.push_back(cur->val);
+        }
+        return res;
+
+    }
+};
