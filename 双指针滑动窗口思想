@@ -1,0 +1,73 @@
+双指针滑动窗口思想：
+先扩展右指针，直到匹配数合法，
+然后不断右移左指针，直到匹配数不合法终止，记录下来当前的最优解，
+这时候已经不满足了，然后继续右移右指针，直到合法，然后右移左指针，更新最优解
+
+假设我们在一个长序列中找包含元素的最短序列
+比如7590213579，找159，我开始从7找，找全了159之后开始移动窗口，移动左边缘直到元素缺失，再右移
+
+
+
+
+典型例题：面试题17.18
+
+class Solution {
+public:
+    vector<int> shortestSeq(vector<int>& big, vector<int>& small) {
+        int sizeb = big.size();
+        int sizes = small.size();
+
+        int len = INT_MAX;
+        int ps = 0;
+        vector<int> ans;
+        if (sizeb == 0 || sizes == 0) {
+            return ans;
+        }
+        unordered_map<int, int> needs;
+        unordered_map<int, int> window;
+
+        for (int i = 0; i < sizes; i++) {
+            needs[small[i]]++;
+        }
+        int left = 0;
+        int right = 0;
+        int match = 0;
+        int start = -1;
+        int end = -1;
+        while (right < sizeb) {
+            int current = big[right];
+            if (needs.count(current)) {
+                // 如果短数组里包含这个元素的话
+                window[current]++;
+                if (window[current] == needs[current]) {
+                    // 这里是避免重复计算
+                    match++;
+                }
+            }
+            right++;
+            while (match == sizes) {
+                //  上面找到了包含短数组的一个序列
+                //　接下来就是缩短左边界,　直到不满足　match == size
+                if ((right - left) < len) {
+                    start = left;
+                    end = right - 1;
+                    len = right - left;
+                }
+                int l = big[left];
+                if (needs.count(l)) {
+                    window[l]--;
+                    if (window[l] < needs[l]) {
+                        match--;
+                    }
+                }
+                left++;
+            }
+        }
+        if (start != -1) {
+            ans.push_back(start);
+            ans.push_back(end);
+        }
+        
+        return ans;
+    }
+};
