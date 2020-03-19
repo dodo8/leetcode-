@@ -1,0 +1,30 @@
+就是不用库函数求幂运算
+
+思想很简单
+
+看到是求一个数的整数次方x^nx ，那么很容易想到如下结论：
+
+n为偶数，则 x^n=x^{n/2}*x^{n/2} 
+n为奇数，则 x^n=x^{n/2}*x^{n/2}*x
+注：这里是整除，本来应该是x^n=x^{(n-1)/2}*x^{(n-1)/2}*x
+
+
+class Solution {
+public:
+    double myPow(double x, int n) {
+        double res = 1.0;
+        int t = n;
+        while(n)
+        {
+            if(n&1) res *= x;
+            x *= x;
+            n /= 2;
+        }
+        return t > 0? res : 1.0 / res;
+    }
+};
+
+
+关于if(n&1)
+
+只要n的最右边一位是1，结果就不是0，为true，条件成立。所以这句话实际上就是if(n%2==1)
